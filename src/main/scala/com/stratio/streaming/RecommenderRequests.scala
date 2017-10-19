@@ -15,6 +15,14 @@ object RecommenderRequests{
 
   }
 
+  def sendRatings(ratings: List[Rating], host: String, port: Int): HttpResponse[String] = {
+    val bytesToSend = ratings.map(rating=> s"${rating.item},${rating.rating}").mkString("\n")
+    throw new Exception("Do something with ratings!!!")
+    /*val url = s"http://${host}:${port}/${rating.user}/ratings"
+    val result = Http("http://localhost:5432/0/ratings").postData(bytesToSend).option(HttpOptions.readTimeout(10000)).asString
+    result*/
+  }
+
 
   def oldMain(args: Array[String]): Unit = {
     val bytesToSend = """260,9

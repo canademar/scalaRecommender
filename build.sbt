@@ -1,6 +1,6 @@
 name := "streamingRecommend"
 
-version := "0.1"
+version := "0.2"
 
 scalaVersion := "2.11.8"
 
@@ -21,27 +21,24 @@ libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 libraryDependencies +=   "net.debasishg" %% "redisclient" % "3.4"
 
 
+mainClass in (Compile, run) := Some("com.stratio.streaming.StreamingReceiver")
 
+mainClass in assembly := Some("com.stratio.streaming.StreamingReceiver")
 
-
-
-
-
-
-
-
-
-
-mainClass in (Compile, run) := Some("com.paradigma.streaming.StreamingReceiver")
-
-assemblyMergeStrategy in assembly := {
+/*assemblyMergeStrategy in assembly := {
   case PathList("javax", "servlet", xs @ _*)         => MergeStrategy.first
   case PathList(ps @ _*) if ps.last endsWith ".html" => MergeStrategy.first
   case "application.conf"                            => MergeStrategy.concat
   case "unwanted.txt"                                => MergeStrategy.discard
-  case x =>
-    val oldStrategy = (assemblyMergeStrategy in assembly).value
-    oldStrategy(x)
+  case "META-INF/MANIFEST.MF"                        => MergeStrategy.discard
+  case x => MergeStrategy.first
+
+}
+*/
+assemblyMergeStrategy in assembly := {
+  //case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case _ => MergeStrategy.first
 }
 
         

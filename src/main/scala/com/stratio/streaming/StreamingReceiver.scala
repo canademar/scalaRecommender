@@ -15,16 +15,22 @@ import scala.util.parsing.json.JSON
 object StreamingReceiver{
   def main(args: Array[String]): Unit = {
 
-    val confFile = new File("/home/cnavarro/workspace/emplea2015/streaming_test/streamingRecommend/src/main/resources/recommender.conf")
+    if(args.length!=1){
+      println("Usage: java -cp jar com.stratio.clustering.StreamingReveiver {confFilePath}")
+      System.exit(1)
+    }
+
+    //val confFile = new File("/home/cnavarro/workspace/emplea2015/streaming_recommender_scala/streamingRecommend/src/main/resources/recommender.conf")
+    val confFile = new File(args(0))
     val parsedConf = ConfigFactory.parseFile(confFile)
     val scalaConf : Config = ConfigFactory.load(parsedConf)
 
-    val appName = scalaConf.getString("app_name")
+    val appName = scalaConf.getString("streaming_app_name")
     val master = scalaConf.getString("master")
     val brokerList = scalaConf.getString("kafka_broker_list")
     val host = scalaConf.getString("recommender_host")
     val port = scalaConf.getInt("recommender_port")
-    val topics = scalaConf.getString("kafka_topics").split(",").toSet
+    val topics = scalaConf.getString("streaming_topics").split(",").toSet
 
     /*val appName = "ratings"
     val master = "local[*]"
@@ -38,7 +44,7 @@ object StreamingReceiver{
 
 
     val conf = new SparkConf().setAppName(appName).setMaster(master)
-    val ssc = new StreamingContext(conf, Seconds(1))
+    val ssc = new StreamingContext(conf, Seconds(15))
 
     val directKafkaStream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
       ssc, kafkaParams, topics)
