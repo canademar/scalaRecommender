@@ -58,6 +58,7 @@ object StreamingReceiver{
     directKafkaStream.foreachRDD {
       rdd=>{
         if(!rdd.isEmpty()){
+          //TODO:  use sendList ratings instead of just processing the head
           val valueString = rdd.collect().toSet.head.asInstanceOf[Tuple2[String, String]]._2
           val rating = parseStringRecommendation(valueString)
           RecommenderRequests.sendRating(rating, host, port)

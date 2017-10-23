@@ -20,6 +20,8 @@ libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 
 libraryDependencies +=   "net.debasishg" %% "redisclient" % "3.4"
 
+libraryDependencies += "org.apache.hadoop" % "hadoop-hdfs" % "2.4.0"
+
 
 mainClass in (Compile, run) := Some("com.stratio.streaming.StreamingReceiver")
 
@@ -36,8 +38,10 @@ mainClass in assembly := Some("com.stratio.streaming.StreamingReceiver")
 }
 */
 assemblyMergeStrategy in assembly := {
-  //case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+  case PathList("META-INF", "services", "org.apache.hadoop.fs.FileSystem") => MergeStrategy.filterDistinctLines
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  //case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+  //case PathList("META-INF", ps @ _*) => MergeStrategy.first
   case _ => MergeStrategy.first
 }
 
